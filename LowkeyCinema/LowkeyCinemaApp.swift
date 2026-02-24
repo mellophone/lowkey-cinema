@@ -25,7 +25,7 @@ struct LowkeyCinemaApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            DiscoveryView()
         }
         .modelContainer(sharedModelContainer)
     }
