@@ -9,10 +9,22 @@ import SwiftUI
 import SwiftData
 
 struct DiscoveryView: View {
-    @StateObject private var viewModel = DiscoveryViewModel()
-
+    @StateObject private var viewModel: DiscoveryViewModel
+    
+    init(tmdbService: TMDBServicing = TMDBService()) {
+        self._viewModel = StateObject(
+            wrappedValue: DiscoveryViewModel(tmdbService: tmdbService)
+        )
+    }
+    
     var body: some View {
-        NavigationView {
+        VStack {
+            Button {
+                viewModel.fetchMovies()
+            } label: {
+                Text("Fetch movies")
+            }
+            
             ScrollView {
                 LazyVStack {
                     ForEach(viewModel.movies, id: \.name) { movie in
@@ -21,7 +33,6 @@ struct DiscoveryView: View {
                 }
             }
         }
-        .navigationTitle("Movies")
     }
 }
 

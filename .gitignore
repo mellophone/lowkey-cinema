@@ -10,6 +10,9 @@ DerivedData/
 # Xcode workspace settings (user-specific)
 xcuserdata/
 
+# Secrets
+LowkeyCinema/Config/Secrets.xcconfig
+
 # Swift Package Manager
 /.build/
 Package.resolved

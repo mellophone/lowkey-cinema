@@ -22,10 +22,12 @@ struct LowkeyCinemaApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
+    
+    let tmdbService = TMDBService()
 
     var body: some Scene {
         WindowGroup {
-            DiscoveryView()
+            DiscoveryView(tmdbService: tmdbService)
         }
         .modelContainer(sharedModelContainer)
     }
