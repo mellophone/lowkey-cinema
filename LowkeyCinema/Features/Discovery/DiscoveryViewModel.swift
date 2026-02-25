@@ -11,21 +11,21 @@ import Combine
 class DiscoveryViewModel: ObservableObject {
     let tmdbService: TMDBServicing
     
-    @Published var movies: [DiscoveredMovie] = [
-        DiscoveredMovie(name: "Star Wars"),
-        DiscoveredMovie(name: "The Matrix"),
-        DiscoveredMovie(name: "WarGames")
-    ]
+    @Published var movies: [DiscoveredMovie] = []
     
     init(tmdbService: TMDBServicing = TMDBService()) {
         self.tmdbService = tmdbService
     }
     
-    func fetchMovies() {
-        Task {
-            await tmdbService.fetchMovies { result in
-                // TODO: Add result to published var
-            }
+    @MainActor
+    func refreshMovies() async {
+        let result = await tmdbService.fetchMovies()
+        
+        switch result {
+        case .success(let movies):
+            self.movies = movies
+        case .failure:
+            break
         }
     }
 }

@@ -6,5 +6,5 @@
 //
 
 protocol TMDBServicing {
-    func fetchMovies(completion: @escaping (Result<[DiscoveredMovie], Error>) -> Void) async
+    func fetchMovies() async -> Result<[DiscoveredMovie], any Error>
 }

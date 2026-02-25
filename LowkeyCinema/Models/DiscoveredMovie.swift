@@ -6,5 +6,5 @@
 //
 
 struct DiscoveredMovie: Codable, Equatable {
-    var name: String
+    var title: String
 }

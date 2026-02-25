@@ -20,15 +20,17 @@ struct DiscoveryView: View {
     var body: some View {
         VStack {
             Button {
-                viewModel.fetchMovies()
+                Task {
+                    await viewModel.refreshMovies()
+                }
             } label: {
                 Text("Fetch movies")
             }
             
             ScrollView {
                 LazyVStack {
-                    ForEach(viewModel.movies, id: \.name) { movie in
-                        Text(movie.name)
+                    ForEach(viewModel.movies, id: \.title) { movie in
+                        Text(movie.title)
                     }
                 }
             }
