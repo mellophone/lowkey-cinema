@@ -19,20 +19,19 @@ struct DiscoveryView: View {
     
     var body: some View {
         VStack {
-            Button {
-                Task {
-                    await viewModel.refreshMovies()
-                }
-            } label: {
-                Text("Fetch movies")
-            }
-            
             ScrollView {
                 LazyVStack {
-                    ForEach(viewModel.movies, id: \.title) { movie in
-                        Text(movie.title)
+                    ForEach(viewModel.movies) { movie in
+                        MovieCardView(discoveredMovie: movie)
                     }
                 }
+            }
+        }
+        .padding(5)
+        .ignoresSafeArea(edges: .bottom)
+        .onAppear {
+            Task {
+                await viewModel.refreshMovies()
             }
         }
     }
