@@ -6,12 +6,58 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MovieCardView: View {
+    @Environment(\.modelContext) var modelContext
+    @Query var savedMovies: [SavedMovie]
+    
     let discoveredMovie: DiscoveredMovie
+    
+    var savedMovie: SavedMovie? {
+        savedMovies.first
+    }
+    
+    var isSaved: Bool {
+        savedMovie != nil
+    }
+    
+    init(discoveredMovie: DiscoveredMovie) {
+        self.discoveredMovie = discoveredMovie
+        self._savedMovies = Query(
+            filter: #Predicate<SavedMovie> {
+                $0.id == discoveredMovie.id
+            }
+        )
+    }
+    
+    func toggleSave() {
+        if let savedMovie {
+            modelContext.delete(savedMovie)
+        } else {
+            modelContext.insert(
+                SavedMovie(discoveredMovie: discoveredMovie)
+            )
+        }
+    }
     
     var body: some View {
         VStack {
+            HStack {
+                Spacer()
+
+                Button {
+                    toggleSave()
+                } label: {
+                    Image(systemName: isSaved ? "star.fill" : "star")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxHeight: 25)
+                        .foregroundStyle(Color.white)
+                        .font(.title)
+                }
+            }
+            
             Spacer()
             
             HStack(alignment: .bottom) {
@@ -22,8 +68,8 @@ struct MovieCardView: View {
                 
                 Spacer()
             }
-            .shadow(color: Color.black, radius: 5)
         }
+        .shadow(color: Color.black, radius: 5)
         .padding(5)
         .frame(maxWidth: .infinity)
         .frame(height: 160)
