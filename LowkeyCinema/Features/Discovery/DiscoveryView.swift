@@ -20,6 +20,7 @@ struct DiscoveryView: View {
     var body: some View {
         VStack {
             ScrollView {
+                // TODO: Add columns for wider screens
                 LazyVStack {
                     ForEach(viewModel.movies) { movie in
                         MovieCardView(discoveredMovie: movie)

@@ -75,7 +75,7 @@ struct MovieCardView: View {
         .frame(height: 160)
         .background {
             if let backgroundPath = discoveredMovie.backdropPath {
-                // TODO: Extract URL
+                // TODO: Extract URL, optimize, and cache
                 AsyncImage(url: URL(string: "https://image.tmdb.org/t/p/original\(backgroundPath)")) { phase in
                     if let image = phase.image {
                         image
