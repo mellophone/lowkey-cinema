@@ -18,10 +18,11 @@ struct DiscoveryView: View {
     }
     
     var body: some View {
+        // TODO: Extract movie scroll view for sharing
         VStack {
             ScrollView {
                 // TODO: Add columns for wider screens
-                LazyVStack {
+                VStack {
                     ForEach(viewModel.movies) { movie in
                         MovieCardView(discoveredMovie: movie)
                     }
@@ -29,7 +30,6 @@ struct DiscoveryView: View {
             }
         }
         .padding(5)
-        .ignoresSafeArea(edges: .bottom)
         .onAppear {
             Task {
                 await viewModel.refreshMovies()

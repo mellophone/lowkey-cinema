@@ -36,7 +36,7 @@ enum NavigationScreen {
     func content(with tmdbService: TMDBServicing) -> some View {
         switch self {
         case .discovery: DiscoveryView(tmdbService: tmdbService)
-        case .saved: Text("Saved Screen")
+        case .saved: SavedMoviesView()
         }
     }
     

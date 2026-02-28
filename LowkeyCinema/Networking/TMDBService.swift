@@ -11,7 +11,6 @@ class TMDBService: TMDBServicing {
     func fetchMovies() async -> Result<[DiscoveredMovie], any Error> {
         // TODO: Refactor, extract logic and constants
         
-        print("Building request")
         let url = URL(string: "https://api.themoviedb.org/3/discover/movie")!
         var components = URLComponents(url: url, resolvingAgainstBaseURL: true)!
         let queryItems: [URLQueryItem] = [
@@ -31,15 +30,11 @@ class TMDBService: TMDBServicing {
           "Authorization": "Bearer \(Config.apiKey)"
         ]
 
-        print("Request built")
         if let (data, _) = try? await URLSession.shared.data(for: request),
            let discoveryResponse = try? JSONDecoder().decode(DiscoveryResponse.self, from: data) {
-            print("Request successful")
             
             return .success(discoveryResponse.results)
         } else {
-            print("Request failed")
-            
             // TODO: Use custom errors
             return .failure(URLError(.badServerResponse))
         }
