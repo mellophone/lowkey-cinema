@@ -9,12 +9,10 @@ import SwiftUI
 import SwiftData
 
 struct DiscoveryView: View {
-    @StateObject private var viewModel: DiscoveryViewModel
+    @ObservedObject var viewModel: DiscoveryViewModel
     
-    init(tmdbService: TMDBServicing = TMDBService()) {
-        self._viewModel = StateObject(
-            wrappedValue: DiscoveryViewModel(tmdbService: tmdbService)
-        )
+    init(viewModel: DiscoveryViewModel = DiscoveryViewModel()) {
+        self.viewModel = viewModel
     }
     
     var body: some View {
@@ -22,18 +20,19 @@ struct DiscoveryView: View {
         VStack {
             ScrollView {
                 // TODO: Add columns for wider screens
-                VStack {
+                LazyVStack {
                     ForEach(viewModel.movies) { movie in
                         MovieCardView(discoveredMovie: movie)
+                            .id(movie.id)
                     }
                 }
+                .scrollTargetLayout()
             }
+            .scrollPosition(id: $viewModel.scrollID, anchor: .top)
         }
         .padding(5)
-        .onAppear {
-            Task {
-                await viewModel.refreshMovies()
-            }
+        .task {
+            await viewModel.onAppear()
         }
     }
 }

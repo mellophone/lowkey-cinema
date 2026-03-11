@@ -12,7 +12,13 @@ struct NavigationMainView: View {
     @State var discoveryPath: [NavigationScreen] = []
     @State var savedPath: [NavigationScreen] = []
     
-    let tmdbService: TMDBServicing
+    @StateObject var discoveryViewModel: DiscoveryViewModel
+    
+    init(tmdbService: TMDBServicing = TMDBService()) {
+        self._discoveryViewModel = StateObject(
+            wrappedValue: DiscoveryViewModel(tmdbService: tmdbService)
+        )
+    }
     
     // TODO: Find a way to retain scroll position for paths
     var path: Binding<[NavigationScreen]> {
@@ -25,9 +31,9 @@ struct NavigationMainView: View {
     var body: some View {
         VStack {
             NavigationStack(path: path) {
-                rootScreen.content(with: tmdbService)
+                rootScreen.content(discoveryViewModel: discoveryViewModel)
                     .navigationDestination(for: NavigationScreen.self) { screen in
-                        screen.content(with: tmdbService)
+                        screen.content(discoveryViewModel: discoveryViewModel)
                     }
             }
 
@@ -37,7 +43,5 @@ struct NavigationMainView: View {
 }
 
 #Preview {
-    NavigationMainView(
-        tmdbService: TMDBService()
-    )
+    NavigationMainView()
 }

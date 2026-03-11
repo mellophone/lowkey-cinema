@@ -8,17 +8,28 @@
 import SwiftUI
 import Combine
 
-class DiscoveryViewModel: ObservableObject {
-    let tmdbService: TMDBServicing
-    
+final class DiscoveryViewModel: ObservableObject {
     @Published var movies: [DiscoveredMovie] = []
+    @Published var scrollID: Int?
+
+    private let tmdbService: TMDBServicing
     
     init(tmdbService: TMDBServicing = TMDBService()) {
         self.tmdbService = tmdbService
     }
     
+    public func onAppear() async {
+        await performInitialFetch()
+    }
+    
+    private func performInitialFetch() async {
+        if movies.isEmpty {
+            await refreshMovies()
+        }
+    }
+    
     @MainActor
-    func refreshMovies() async {
+    private func refreshMovies() async {
         let result = await tmdbService.fetchMovies()
         
         switch result {

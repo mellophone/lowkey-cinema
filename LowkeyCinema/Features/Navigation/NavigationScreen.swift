@@ -11,7 +11,7 @@ enum NavigationScreen {
     case discovery
     case saved
     
-    var name: String {
+    public var name: String {
         switch self {
         case .discovery: "Discover"
         case .saved: "Saved"
@@ -33,14 +33,14 @@ enum NavigationScreen {
     }
     
     @ViewBuilder
-    func content(with tmdbService: TMDBServicing) -> some View {
+    public func content(discoveryViewModel: DiscoveryViewModel) -> some View {
         switch self {
-        case .discovery: DiscoveryView(tmdbService: tmdbService)
+        case .discovery: DiscoveryView(viewModel: discoveryViewModel)
         case .saved: SavedMoviesView()
         }
     }
     
-    func iconName(withRoot rootScreen: NavigationScreen) -> String {
+    public func iconName(withRoot rootScreen: NavigationScreen) -> String {
         rootScreen == self ? selectedIconName : unselectedIconName
     }
 }

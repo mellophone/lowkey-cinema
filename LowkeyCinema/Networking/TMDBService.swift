@@ -32,7 +32,7 @@ class TMDBService: TMDBServicing {
 
         if let (data, _) = try? await URLSession.shared.data(for: request),
            let discoveryResponse = try? JSONDecoder().decode(DiscoveryResponse.self, from: data) {
-            
+            print("Fetched")
             return .success(discoveryResponse.results)
         } else {
             // TODO: Use custom errors
